@@ -1,27 +1,6 @@
 import csv
 import random
-
-
-def euclidian_distance(q, r):
-    return pow(pow(float(q[0]) - float(r[0]), 2) + pow(float(q[1]) - float(r[1]), 2)
-               + pow(float(q[2]) - float(r[2]), 2) + pow(float(q[3]) - float(r[3]), 2), 1 / 2)
-
-
-def range_search(register_list, query, radius):
-    query_item = register_list[query]
-    answer_list = []
-    for register in register_list:
-        if register != query:
-            distance = euclidian_distance(query_item, register)
-            if distance < radius:
-                answer_list.append(register)
-                # print(register)  # Descomentar para ver los registros en el rango
-    hits = 0
-    for register in answer_list:
-        if query_item[4] == register[4]:
-            hits += 1
-    print("Precision: " + str(hits/len(answer_list)))
-    return answer_list
+from utils import *
 
 
 def random_quartile_radius(sample_list):
@@ -36,6 +15,24 @@ def random_quartile_radius(sample_list):
     answer_list.append(round(distance_list[(len(distance_list)*3)//4], 2))
     return answer_list
 
+def range_search(register_list, query, radius):
+    print(query)
+    query_item = register_list[query]
+    answer_list = []
+    for register in register_list:
+        if register != query:
+            #print("query_item: ",query_item)
+            #print("register: ",register)
+            distance = euclidian_distance(query_item, register)
+            if distance < radius:
+                answer_list.append(register)
+                # print(register)  # Descomentar para ver los registros en el rango
+    hits = 0
+    for register in answer_list:
+        if query_item[4] == register[4]:
+            hits += 1
+    #print("Precision: " + str(hits/len(answer_list)))
+    return answer_list
 
 def start(filename, query_list):
     with open(filename, newline='') as file:
@@ -44,13 +41,14 @@ def start(filename, query_list):
         for row in csvfile:
             register_list.append(row)
 
+    print(register_list)
     quartile_list = random_quartile_radius(register_list)
 
     for elem in query_list:
         for quartile in quartile_list:
-            print("Query: "+str(elem)+" Radius: "+str(quartile))
+            #print("Query: "+str(elem)+" Radius: "+str(quartile))
             range_search(register_list, elem, quartile)
-            print('\n')
+            #print('\n')
 
 
 if __name__ == "__main__":
