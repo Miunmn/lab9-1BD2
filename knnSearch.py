@@ -7,21 +7,30 @@ def knnSearch(register_list, query, k_val):
     query_item = register_list[query]
     result = []
     for register in register_list:
-        if register != query:
+        if register != query_item:
             distance = euclidian_distance(query_item, register)
             pair = (register, distance)
             result.append(pair)    
     result.sort(key = lambda tup: tup[1])
-    return result[1:k_val]
+
+    #print(query_item)
+    hits = 0
+    result = result[0:k_val] 
+    for register in result:
+        if query_item[4] == register[0][4]:
+            hits += 1
+    print("PR: " + str(hits/len(result)))
+    return result
 
 def solve(query_list, register_list):
     for elem in query_list:
         for k_val in k_values:
-            print(elem, k_val)
+            print("elemento de la data: ", elem)
+            print("valor de k: ", k_val)
+            print("tupla: ", register_list[elem] )
             knnresult = knnSearch(register_list, elem, k_val)
-            print(knnresult[len(knnresult)-1])
-            #for Ci, dist in knnresult:
-            #    print(Ci,dist)
+            for Ci, dist in knnresult:
+                print(Ci,dist)
             print("\n")
 
 def start(filename, query_list):

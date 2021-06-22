@@ -31,7 +31,7 @@ def range_search(register_list, query, radius):
     for register in answer_list:
         if query_item[4] == register[4]:
             hits += 1
-    #print("Precision: " + str(hits/len(answer_list)))
+    print("Precision: " + str(hits/len(answer_list)))
     return answer_list
 
 def start(filename, query_list):
